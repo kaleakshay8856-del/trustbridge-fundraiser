@@ -3,6 +3,8 @@
 const API_BASE = window.APP_CONFIG ? window.APP_CONFIG.API_BASE : './api';
 let currentUser = null;
 
+console.log('main.js - API_BASE:', API_BASE);
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initAnimations();

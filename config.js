@@ -1,6 +1,4 @@
 // Frontend Configuration
-// Update this after deploying backend to Railway
-
 const CONFIG = {
     // For local development
     API_BASE_LOCAL: './api',
@@ -16,3 +14,7 @@ const CONFIG = {
 
 // Export for use in other files
 window.APP_CONFIG = CONFIG;
+
+// Debug log
+console.log('Config loaded:', CONFIG);
+console.log('Using API_BASE:', CONFIG.API_BASE);
