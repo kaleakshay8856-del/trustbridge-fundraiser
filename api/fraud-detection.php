@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+require_once '../config/database-supabase.php';
 
 class FraudDetection {
     private $db;

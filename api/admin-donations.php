@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once '../config/database.php';
+require_once '../config/database-supabase.php';
 require_once '../config/jwt.php';
 require_once '../utils/auth-middleware.php';
 

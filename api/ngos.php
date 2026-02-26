@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once '../config/database.php';
+require_once '../config/database-supabase.php';
 
 $db = Database::getInstance();
 $method = $_SERVER['REQUEST_METHOD'];
