@@ -1,12 +1,11 @@
 <?php
 // CORS Configuration for Production
 
-// Allow requests from Vercel frontend
-// INSTRUCTIONS: After deploying to Vercel, add your Vercel URL here
+// Allow requests from Netlify frontend
 $allowed_origins = [
     'http://localhost',
     'http://localhost:8000',
-    'https://your-app.vercel.app', // Replace with your actual Vercel URL
+    'https://celebrated-muffin-00f691.netlify.app',
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
