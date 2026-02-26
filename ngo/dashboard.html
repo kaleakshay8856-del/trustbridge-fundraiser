@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard - TrustBridge</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar glass">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-bridge"></i> TrustBridge</h2>
+                <p class="role-badge">NGO</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#profile" class="nav-item active">
+                    <span><i class="fas fa-building"></i></span> NGO Profile
+                </a>
+                <a href="#documents" class="nav-item">
+                    <span><i class="fas fa-file-alt"></i></span> Documents
+                </a>
+                <a href="#campaigns" class="nav-item">
+                    <span><i class="fas fa-bullhorn"></i></span> Campaigns
+                </a>
+                <a href="#donations" class="nav-item">
+                    <span><i class="fas fa-hand-holding-heart"></i></span> Donations
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1>NGO Dashboard</h1>
+                <div class="user-info">
+                    <span id="ngoName">NGO User</span>
+                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                </div>
+            </header>
+
+            <!-- Status Alert -->
+            <div id="statusAlert" class="alert-box"></div>
+
+            <!-- Submit for Verification Button -->
+            <div id="submitVerificationSection" style="display: none; margin-bottom: 2rem;">
+                <div class="glass" style="padding: 1.5rem; text-align: center;">
+                    <h3>Ready to Submit for Verification?</h3>
+                    <p style="color: #6B7280; margin: 1rem 0;">Make sure you have:</p>
+                    <ul style="text-align: left; max-width: 500px; margin: 1rem auto; color: #6B7280;">
+                        <li>✓ Completed your NGO profile</li>
+                        <li>✓ Uploaded Registration Certificate</li>
+                        <li>✓ Uploaded PAN Card</li>
+                        <li>✓ Uploaded Address Proof</li>
+                    </ul>
+                    <button class="btn btn-primary btn-lg ripple" onclick="submitForVerification()">
+                        Submit for Admin Verification
+                    </button>
+                </div>
+            </div>
+
+            <!-- NGO Profile Section -->
+            <section class="dashboard-section" id="profile">
+                <h2>NGO Profile</h2>
+                <div class="glass" style="padding: 2rem;">
+                    <form id="ngoProfileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>NGO Name *</label>
+                                <input type="text" name="ngo_name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Number *</label>
+                                <input type="text" name="registration_number" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>PAN Number *</label>
+                                <input type="text" name="pan_number" class="form-control" maxlength="10" required>
+                            </div>
+                            <div class="form-group">
+                                <label>UPI ID *</label>
+                                <input type="text" name="upi_id" class="form-control" placeholder="yourname@upi" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea name="description" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="address" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" name="city" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" name="state" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Pincode</label>
+                                <input type="text" name="pincode" class="form-control" maxlength="6">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Website</label>
+                                <input type="url" name="website" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Founded Year</label>
+                                <input type="number" name="founded_year" class="form-control" min="1900" max="2026">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="has_80g"> Has 80G Certificate
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary ripple">Save Profile</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Documents Section -->
+            <section class="dashboard-section" id="documents">
+                <h2>Upload Documents</h2>
+                <div class="glass" style="padding: 2rem;">
+                    <p style="margin-bottom: 1rem; color: #6B7280;">Upload required documents for verification</p>
+                    <div id="documentsList"></div>
+                    <form id="documentUploadForm" style="margin-top: 2rem;" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Document Type *</label>
+                            <select name="document_type" class="form-control" required>
+                                <option value="">Select Document Type</option>
+                                <option value="registration_certificate">Registration Certificate</option>
+                                <option value="80g_certificate">80G Certificate</option>
+                                <option value="pan_card">PAN Card</option>
+                                <option value="address_proof">Address Proof</option>
+                                <option value="bank_statement">Bank Statement</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Method</label>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="margin-right: 2rem;">
+                                    <input type="radio" name="upload_method" value="file" checked onchange="toggleUploadMethod()"> Upload File
+                                </label>
+                                <label>
+                                    <input type="radio" name="upload_method" value="url" onchange="toggleUploadMethod()"> Provide URL
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="fileUploadSection">
+                            <label>Select Document File *</label>
+                            <input type="file" name="document_file" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                            <small style="color: #6B7280;">Accepted formats: PDF, JPG, PNG (Max 5MB)</small>
+                        </div>
+                        <div class="form-group" id="urlUploadSection" style="display: none;">
+                            <label>Document URL</label>
+                            <input type="url" name="document_url" class="form-control" placeholder="https://drive.google.com/...">
+                            <small style="color: #6B7280;">Upload to Google Drive/Dropbox and paste the link</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary ripple">Upload Document</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Campaigns Section -->
+            <section class="dashboard-section" id="campaigns">
+                <h2>Fundraising Campaigns</h2>
+                <div class="glass" style="padding: 2rem;">
+                    <div id="campaignsList"></div>
+                    <button class="btn btn-primary ripple" onclick="showCreateCampaign()" style="margin-top: 1rem;">Create New Campaign</button>
+                </div>
+            </section>
+
+            <!-- Donations Section -->
+            <section class="dashboard-section" id="donations">
+                <h2>Received Donations</h2>
+                <div class="table-container glass">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Donor</th>
+                                <th>Amount</th>
+                                <th>Transaction ID</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donationsTable">
+                            <!-- Data loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Create Campaign Modal -->
+    <div class="modal" id="campaignModal">
+        <div class="modal-content glass">
+            <span class="modal-close" onclick="closeModal('campaignModal')">&times;</span>
+            <h2>Create Campaign</h2>
+            <form id="campaignForm">
+                <div class="form-group">
+                    <label>Campaign Title *</label>
+                    <input type="text" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea name="description" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Goal Amount (₹) *</label>
+                    <input type="number" name="goal_amount" class="form-control" min="1000" required>
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" name="end_date" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block ripple">Create Campaign</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/ngo-dashboard.js"></script>
+</body>
+</html>

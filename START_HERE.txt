@@ -1,0 +1,190 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          🌉 TRUSTBRIDGE - NGO FUNDRAISING PLATFORM          ║
+║                                                              ║
+║                    QUICK START GUIDE                         ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+📋 WHAT YOU NEED:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. PHP 8.0 or higher
+2. MySQL or PostgreSQL database
+3. Web browser
+4. 5 minutes of your time
+
+
+🚀 OPTION 1: SUPER QUICK (Using XAMPP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Install XAMPP
+   → Download: https://www.apachefriends.org/
+   → Install and start Apache + MySQL
+
+Step 2: Copy Project
+   → Move this folder to: C:\xampp\htdocs\trustbridge
+
+Step 3: Setup Database
+   → Open: http://localhost/phpmyadmin
+   → Create database: trustbridge
+   → Import: database/schema-mysql.sql
+
+Step 4: Configure
+   → Edit: config/database.php
+   → Set: DB_HOST = 'localhost'
+   → Set: DB_USER = 'root'
+   → Set: DB_PASS = '' (empty)
+
+Step 5: Run
+   → Open: http://localhost/trustbridge
+   → Login: admin@trustbridge.local / admin123
+
+
+🚀 OPTION 2: SIMPLE (Using PHP Built-in Server)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Install PHP
+   → Download: https://windows.php.net/download/
+   → Extract to C:\php
+   → Add to PATH
+
+Step 2: Setup Database (Supabase - Free Cloud)
+   → Go to: https://supabase.com
+   → Create account + new project
+   → SQL Editor → Paste database/schema.sql → Run
+   → Copy connection details
+
+Step 3: Configure
+   → Edit: config/database.php
+   → Paste Supabase credentials
+
+Step 4: Run
+   → Double-click: setup.bat
+   → Open: http://localhost:8000
+
+
+🧪 TEST YOUR SETUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Open in browser: http://localhost:8000/test-connection.php
+
+This will check:
+✓ PHP version
+✓ Database connection
+✓ Required extensions
+✓ File permissions
+
+
+🎯 DEFAULT CREDENTIALS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Admin:
+   Email:    admin@trustbridge.local
+   Password: admin123
+
+Donor:
+   Email:    donor@trustbridge.local
+   Password: donor123
+
+
+📂 IMPORTANT FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RUN_ME_FIRST.md          ← Start here!
+QUICK_START.md           ← Detailed setup guide
+config/database.php      ← Database settings
+database/schema-mysql.sql ← MySQL database
+database/schema.sql      ← PostgreSQL database
+test-connection.php      ← Test your setup
+
+
+🎓 LEARNING PATH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ✅ Get it running (you are here!)
+2. 📖 Explore the homepage
+3. 🔐 Login as admin
+4. 🏢 Create test NGO
+5. 💰 Test donation flow
+6. 📊 View admin dashboard
+7. 🚀 Deploy to production
+
+
+🆘 TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problem: "Database connection failed"
+Fix: Check config/database.php credentials
+
+Problem: "Cannot access localhost"
+Fix: Make sure PHP server is running
+
+Problem: "Page not found"
+Fix: Check you're in correct directory
+
+Problem: "QR code not showing"
+Fix: Check internet connection (needs CDN)
+
+
+📚 DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+README.md                 - Project overview
+SECURITY_GUIDE.md         - Security features
+DEPLOYMENT_GUIDE.md       - Production deployment
+TRUST_SCORE_EXAMPLES.md   - Trust score logic
+PROJECT_SUMMARY.md        - Complete summary
+
+
+✨ KEY FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Multi-admin approval (2+ required)
+✓ Trust score system (60+ for approval)
+✓ UPI QR code donations
+✓ Fraud detection
+✓ Immutable audit logs
+✓ Beautiful glassmorphism UI
+✓ Smooth GSAP animations
+✓ Fully responsive design
+
+
+🎉 READY TO START?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Choose Option 1 or Option 2 above
+2. Follow the steps
+3. Open RUN_ME_FIRST.md for detailed guide
+4. Run test-connection.php to verify
+5. Start exploring!
+
+
+💡 QUICK COMMANDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Check PHP version:
+   php -v
+
+Start server:
+   php -S localhost:8000
+
+Test database:
+   php test-connection.php
+
+
+🌐 URLS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Homepage:        http://localhost:8000
+Admin Dashboard: http://localhost:8000/admin/dashboard.html
+Test Connection: http://localhost:8000/test-connection.php
+
+
+═══════════════════════════════════════════════════════════════
+
+Need help? Open RUN_ME_FIRST.md or QUICK_START.md
+
+Happy coding! 🚀
+
+═══════════════════════════════════════════════════════════════

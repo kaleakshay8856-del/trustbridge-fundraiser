@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustBridge - Secure NGO Fundraising Platform</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo"><i class="fas fa-bridge"></i> TrustBridge</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#ngos">Browse NGOs</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn btn-outline" onclick="showLogin()">Login</button>
+                <button class="btn btn-primary" onclick="showRegister()">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title fade-in">Empower Change Through <span class="gradient-text">Trusted Giving</span></h1>
+                <p class="hero-subtitle fade-in">Connect with verified NGOs and make a real impact. Every donation is tracked, verified, and transparent.</p>
+                <div class="hero-actions fade-in">
+                    <button class="btn btn-primary btn-lg ripple" onclick="document.getElementById('ngos').scrollIntoView({behavior: 'smooth'})">Start Donating</button>
+                    <button class="btn btn-outline btn-lg" onclick="showRegister()">Register Your NGO</button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card glass">
+                    <div class="stat-number" data-target="1250">0</div>
+                    <div class="stat-label"><i class="fas fa-building"></i> Verified NGOs</div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-number" data-target="45000">0</div>
+                    <div class="stat-label"><i class="fas fa-users"></i> Donors</div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-number">₹<span data-target="2.5">0</span>Cr</div>
+                    <div class="stat-label"><i class="fas fa-hand-holding-heart"></i> Funds Raised</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured NGOs -->
+    <section class="featured-ngos" id="ngos">
+        <div class="container">
+            <h2 class="section-title">Featured NGOs</h2>
+            <div class="ngo-grid" id="ngoGrid">
+                <!-- NGO cards will be loaded here -->
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn btn-primary btn-lg ripple" onclick="showAllNGOs()">View All NGOs</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">About TrustBridge</h2>
+            <div class="about-content">
+                <div class="about-card glass">
+                    <div class="about-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Secure & Transparent</h3>
+                    <p>Every donation is tracked with blockchain-inspired verification. Multi-admin approval ensures legitimacy.</p>
+                </div>
+                <div class="about-card glass">
+                    <div class="about-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Verified NGOs Only</h3>
+                    <p>All NGOs undergo rigorous verification including document checks, PAN validation, and trust score assessment.</p>
+                </div>
+                <div class="about-card glass">
+                    <div class="about-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Real-time Tracking</h3>
+                    <p>Monitor your donations in real-time. See exactly where your money goes and the impact it creates.</p>
+                </div>
+                <div class="about-card glass">
+                    <div class="about-icon"><i class="fas fa-user-shield"></i></div>
+                    <h3>Fraud Detection</h3>
+                    <p>Advanced AI-powered fraud detection system monitors suspicious activities and protects your donations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                        <div>
+                            <strong>Email</strong>
+                            <p>support@trustbridge.org</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon"><i class="fas fa-phone"></i></span>
+                        <div>
+                            <strong>Phone</strong>
+                            <p>+91 1800-123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <div>
+                            <strong>Address</strong>
+                            <p>Mumbai, Maharashtra, India</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <form id="contactForm" class="glass" style="padding: 2rem;">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block ripple">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-bridge"></i> TrustBridge</h4>
+                    <p>Empowering change through trusted giving</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#ngos">Browse NGOs</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TrustBridge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content glass">
+            <span class="modal-close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block ripple">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div class="modal" id="donationModal">
+        <div class="modal-content glass">
+            <span class="modal-close" onclick="closeModal('donationModal')">&times;</span>
+            <h2>Make a Donation</h2>
+            <form id="donationForm">
+                <div class="form-group">
+                    <label>Donation Amount</label>
+                    <input type="number" id="donationAmount" class="form-control" placeholder="Enter amount" required>
+                </div>
+                <div id="qrCodeSection" style="display:none;">
+                    <div class="qr-container">
+                        <div id="qrCanvas" style="display: flex; justify-content: center; padding: 1rem;"></div>
+                    </div>
+                    <p class="text-center">Scan QR code with any UPI app</p>
+                    <div class="form-group">
+                        <label>Enter Transaction ID</label>
+                        <input type="text" id="transactionId" class="form-control" placeholder="UPI Transaction ID" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block ripple">Submit Donation</button>
+                </div>
+                <button type="button" id="generateQRBtn" class="btn btn-primary btn-block ripple">Generate QR Code</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content glass">
+            <span class="modal-close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Create Account</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" class="form-control" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" required>
+                        <option value="">Select Account Type</option>
+                        <option value="donor">Donor</option>
+                        <option value="ngo">NGO Representative</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block ripple">Register</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    Already have an account? <a href="#" onclick="closeModal('registerModal'); showLogin();">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

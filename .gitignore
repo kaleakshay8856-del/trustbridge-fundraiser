@@ -1,0 +1,25 @@
+# Environment variables
+.env
+.env.local
+
+# Uploads (use Supabase Storage in production)
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
