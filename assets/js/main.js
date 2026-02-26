@@ -1,6 +1,7 @@
 // TrustBridge Main JavaScript
 
-const API_BASE = window.APP_CONFIG ? window.APP_CONFIG.API_BASE : './api';
+// Hardcoded Railway backend URL for production
+const API_BASE = 'https://trustbridge-fundraiser-production.up.railway.app/api';
 let currentUser = null;
 
 console.log('main.js - API_BASE:', API_BASE);
