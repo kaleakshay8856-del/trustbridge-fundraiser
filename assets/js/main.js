@@ -1,6 +1,6 @@
 // TrustBridge Main JavaScript
 
-const API_BASE = './api';
+const API_BASE = window.APP_CONFIG ? window.APP_CONFIG.API_BASE : './api';
 let currentUser = null;
 
 // Initialize
