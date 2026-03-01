@@ -17,13 +17,20 @@ if (!$ngo) {
 
 if ($method === 'GET') {
     try {
-        $sql = "SELECT * FROM campaigns WHERE ngo_id = ? ORDER BY created_at DESC";
+        $sql = "SELECT 
+                    c.*,
+                    COALESCE(SUM(CASE WHEN d.verification_status = 'approved' THEN d.amount ELSE 0 END), 0) as raised_amount
+                FROM campaigns c
+                LEFT JOIN donations d ON c.id = d.campaign_id
+                WHERE c.ngo_id = ?
+                GROUP BY c.id
+                ORDER BY c.created_at DESC";
         $stmt = $db->query($sql, [$ngo['id']]);
         $campaigns = $stmt->fetchAll();
         
         echo json_encode(['campaigns' => $campaigns]);
     } catch (Exception $e) {
-        echo json_encode(['error' => 'Failed to load campaigns']);
+        echo json_encode(['error' => 'Failed to load campaigns: ' . $e->getMessage()]);
     }
     
 } elseif ($method === 'POST') {

@@ -357,20 +357,29 @@ async function loadCampaigns() {
         const container = document.getElementById('campaignsList');
         
         if (data.campaigns && data.campaigns.length > 0) {
-            container.innerHTML = data.campaigns.map(campaign => `
+            container.innerHTML = data.campaigns.map(campaign => {
+                const raisedAmount = parseFloat(campaign.raised_amount || 0);
+                const goalAmount = parseFloat(campaign.goal_amount || 1);
+                const percentage = Math.min((raisedAmount / goalAmount) * 100, 100);
+                
+                return `
                 <div class="campaign-card glass" style="padding: 1.5rem; margin-bottom: 1rem;">
                     <h3>${campaign.title}</h3>
-                    <p>${campaign.description}</p>
-                    <div class="progress-bar" style="margin: 1rem 0;">
-                        <div class="progress-fill" style="width: ${(campaign.raised_amount / campaign.goal_amount) * 100}%"></div>
+                    <p style="color: #6B7280; margin: 0.5rem 0;">${campaign.description}</p>
+                    <div class="progress-bar" style="margin: 1rem 0; background: #E5E7EB; height: 8px; border-radius: 4px; overflow: hidden;">
+                        <div class="progress-fill" style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, #2563EB 0%, #1E40AF 100%); transition: width 0.3s;"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>₹${parseFloat(campaign.raised_amount || 0).toLocaleString('en-IN')} raised</span>
-                        <span>Goal: ₹${parseFloat(campaign.goal_amount).toLocaleString('en-IN')}</span>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="font-weight: 600; color: #1F2937;">₹${raisedAmount.toLocaleString('en-IN')} raised</span>
+                        <span style="color: #6B7280;">Goal: ₹${goalAmount.toLocaleString('en-IN')}</span>
                     </div>
-                    <span class="status-badge status-${campaign.status}" style="margin-top: 1rem; display: inline-block;">${campaign.status}</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="status-badge status-${campaign.status}">${campaign.status}</span>
+                        <span style="color: #6B7280; font-size: 14px;">${percentage.toFixed(1)}% funded</span>
+                    </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         } else {
             container.innerHTML = '<p style="color: #6B7280;">No campaigns created yet</p>';
         }
