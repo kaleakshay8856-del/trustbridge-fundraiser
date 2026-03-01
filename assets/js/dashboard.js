@@ -478,14 +478,11 @@ async function loadAnalytics() {
 }
 
 function renderCharts(data) {
-        
+    try {
         renderDonationsChart(data.donations_per_month || []);
-        renderRevenueChart(data.revenue_by_year || []);
         renderApprovalsChart(data.approval_status || []);
-        renderFraudChart(data.fraud_per_month || []);
-        
     } catch (error) {
-        console.error('Failed to load analytics', error);
+        console.error('Failed to render charts', error);
     }
 }
 
