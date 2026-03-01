@@ -354,13 +354,23 @@ async function loadCampaigns() {
         });
         
         const data = await response.json();
+        console.log('Campaigns data:', data);
+        
         const container = document.getElementById('campaignsList');
         
+        if (!container) {
+            console.error('campaignsList element not found!');
+            return;
+        }
+        
         if (data.campaigns && data.campaigns.length > 0) {
+            console.log('Rendering', data.campaigns.length, 'campaigns');
             container.innerHTML = data.campaigns.map(campaign => {
                 const raisedAmount = parseFloat(campaign.raised_amount || 0);
                 const goalAmount = parseFloat(campaign.goal_amount || 1);
                 const percentage = Math.min((raisedAmount / goalAmount) * 100, 100);
+                
+                console.log(`Campaign: ${campaign.title}, Raised: ${raisedAmount}, Goal: ${goalAmount}, %: ${percentage}`);
                 
                 return `
                 <div class="campaign-card glass" style="padding: 1.5rem; margin-bottom: 1rem;">
@@ -381,6 +391,7 @@ async function loadCampaigns() {
             `;
             }).join('');
         } else {
+            console.log('No campaigns found');
             container.innerHTML = '<p style="color: #6B7280;">No campaigns created yet</p>';
         }
     } catch (error) {
