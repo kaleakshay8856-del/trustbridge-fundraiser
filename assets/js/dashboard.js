@@ -3,6 +3,9 @@
 // Hardcoded Railway backend URL for production
 const API_BASE = 'https://trustbridge-fundraiser-production.up.railway.app/api';
 let currentNGO = null;
+let analyticsCache = null;
+let analyticsCacheTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAdminAuth();
@@ -22,14 +25,24 @@ function checkAdminAuth() {
 }
 
 async function loadDashboardData() {
-    await Promise.all([
-        loadKPIs(),
-        loadPendingNGOs(),
-        loadPendingDonations(),
-        loadFraudFlags(),
-        loadAuditLogs(),
-        loadAnalytics()
-    ]);
+    // Load critical data first
+    await loadKPIs();
+    
+    // Load other data in background
+    setTimeout(() => {
+        loadPendingNGOs();
+        loadPendingDonations();
+    }, 100);
+    
+    setTimeout(() => {
+        loadFraudFlags();
+        loadAuditLogs();
+    }, 200);
+    
+    // Load analytics last (heaviest queries)
+    setTimeout(() => {
+        loadAnalytics();
+    }, 500);
 }
 
 async function loadKPIs() {
@@ -420,6 +433,14 @@ async function resolveFraudFlag(flagId) {
 let charts = {};
 
 async function loadAnalytics() {
+    // Check cache first
+    const now = Date.now();
+    if (analyticsCache && (now - analyticsCacheTime) < CACHE_DURATION) {
+        console.log('Using cached analytics data');
+        renderCharts(analyticsCache);
+        return;
+    }
+    
     try {
         const response = await fetch(`${API_BASE}/analytics.php`, {
             headers: {
@@ -445,6 +466,18 @@ async function loadAnalytics() {
         }
         
         console.log('Analytics data:', data);
+        
+        // Cache the data
+        analyticsCache = data;
+        analyticsCacheTime = now;
+        
+        renderCharts(data);
+    } catch (error) {
+        console.error('Failed to load analytics', error);
+    }
+}
+
+function renderCharts(data) {
         
         renderDonationsChart(data.donations_per_month || []);
         renderRevenueChart(data.revenue_by_year || []);
