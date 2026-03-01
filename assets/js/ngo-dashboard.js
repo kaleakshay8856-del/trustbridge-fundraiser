@@ -26,10 +26,54 @@ function checkNGOAuth() {
 async function loadNGOData() {
     await Promise.all([
         loadNGOProfile(),
+        loadNGOStats(),
         loadDocuments(),
         loadCampaigns(),
         loadDonations()
     ]);
+}
+
+async function loadNGOStats() {
+    try {
+        const response = await fetch(`${API_BASE}/ngo-profile.php`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.ngo) {
+            // Calculate total raised from donations
+            const donationsResponse = await fetch(`${API_BASE}/ngo-donations.php`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            const donationsData = await donationsResponse.json();
+            const approvedDonations = donationsData.donations?.filter(d => d.verification_status === 'approved') || [];
+            const totalRaised = approvedDonations.reduce((sum, d) => sum + parseFloat(d.amount), 0);
+            const donationCount = approvedDonations.length;
+            
+            // Update stats
+            document.getElementById('totalRaised').textContent = `₹${totalRaised.toLocaleString('en-IN')}`;
+            document.getElementById('donationCount').textContent = donationCount;
+            document.getElementById('trustScore').textContent = data.ngo.trust_score || 0;
+            
+            // Count active campaigns
+            const campaignsResponse = await fetch(`${API_BASE}/ngo-campaigns.php`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const campaignsData = await campaignsResponse.json();
+            const activeCampaigns = campaignsData.campaigns?.filter(c => c.status === 'active').length || 0;
+            document.getElementById('activeCampaigns').textContent = activeCampaigns;
+        }
+    } catch (error) {
+        console.error('Failed to load NGO stats', error);
+    }
 }
 
 async function loadNGOProfile() {
