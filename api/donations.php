@@ -8,14 +8,26 @@ $db = Database::getInstance();
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'POST') {
-    $user = authenticate(['donor']);
     $input = json_decode(file_get_contents('php://input'), true);
     
     $ngo_id = $input['ngo_id'];
     $campaign_id = $input['campaign_id'] ?? null;
     $amount = floatval($input['amount']);
     $transaction_id = htmlspecialchars($input['transaction_id']);
-    $is_anonymous = $input['is_anonymous'] ?? false;
+    $is_anonymous = $input['is_anonymous'] ?? true;
+    
+    // Try to get authenticated user, but allow anonymous donations
+    $donor_id = null;
+    try {
+        $token = getBearerToken();
+        if ($token) {
+            $decoded = JWT::decode($token);
+            $donor_id = $decoded['user_id'];
+        }
+    } catch (Exception $e) {
+        // Anonymous donation - no user logged in
+        $donor_id = null;
+    }
     
     // Get NGO UPI ID
     $ngo = $db->query("SELECT upi_id, status FROM ngos WHERE id = ?", [$ngo_id])->fetch();
@@ -29,7 +41,7 @@ if ($method === 'POST') {
         $sql = "INSERT INTO donations (donor_id, ngo_id, campaign_id, amount, transaction_id, upi_id, is_anonymous) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $db->query($sql, [
-            $user['user_id'], 
+            $donor_id, 
             $ngo_id, 
             $campaign_id, 
             $amount, 
@@ -40,7 +52,8 @@ if ($method === 'POST') {
         
         echo json_encode(['success' => true, 'message' => 'Donation submitted for verification']);
     } catch (Exception $e) {
-        echo json_encode(['error' => 'Donation submission failed']);
+        error_log("Donation error: " . $e->getMessage());
+        echo json_encode(['error' => 'Donation submission failed: ' . $e->getMessage()]);
     }
     
 } elseif ($method === 'GET') {
