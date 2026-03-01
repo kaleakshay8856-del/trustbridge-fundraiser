@@ -25,8 +25,13 @@ try {
     $stmt = $db->query($sql, [$status, $limit]);
     $donations = $stmt->fetchAll();
     
-    echo json_encode(['donations' => $donations]);
+    echo json_encode([
+        'donations' => $donations,
+        'count' => count($donations),
+        'status_filter' => $status
+    ]);
     
 } catch (Exception $e) {
+    error_log("Admin donations error: " . $e->getMessage());
     echo json_encode(['error' => 'Failed to load donations: ' . $e->getMessage()]);
 }
