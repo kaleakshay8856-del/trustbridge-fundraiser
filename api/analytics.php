@@ -10,26 +10,7 @@ $db = Database::getInstance();
 try {
     $result = [];
     
-    // Donations per month (last 12 months) - PostgreSQL syntax
-    try {
-        $donationsPerMonth = $db->query("
-            SELECT 
-                TO_CHAR(created_at, 'YYYY-MM') as month,
-                COUNT(*) as count,
-                SUM(amount) as total
-            FROM donations
-            WHERE created_at >= NOW() - INTERVAL '12 months'
-            AND verification_status = 'approved'
-            GROUP BY TO_CHAR(created_at, 'YYYY-MM')
-            ORDER BY month ASC
-        ")->fetchAll();
-        $result['donations_per_month'] = $donationsPerMonth;
-    } catch (Exception $e) {
-        $result['donations_per_month'] = [];
-        error_log('Donations query error: ' . $e->getMessage());
-    }
-    
-    // NGO approvals status
+    // NGO approvals status (lightweight query)
     try {
         $approvalStatus = $db->query("
             SELECT 
@@ -44,44 +25,26 @@ try {
         error_log('Approval status query error: ' . $e->getMessage());
     }
     
-    // Fraud flags per month (last 12 months) - PostgreSQL syntax
+    // Donations per month (last 6 months only - faster)
     try {
-        $fraudPerMonth = $db->query("
+        $donationsPerMonth = $db->query("
             SELECT 
                 TO_CHAR(created_at, 'YYYY-MM') as month,
                 COUNT(*) as count,
-                severity
-            FROM fraud_flags
-            WHERE created_at >= NOW() - INTERVAL '12 months'
-            GROUP BY TO_CHAR(created_at, 'YYYY-MM'), severity
-            ORDER BY month ASC
-        ")->fetchAll();
-        $result['fraud_per_month'] = $fraudPerMonth;
-    } catch (Exception $e) {
-        $result['fraud_per_month'] = [];
-        error_log('Fraud flags query error: ' . $e->getMessage());
-    }
-    
-    // Revenue by year - PostgreSQL syntax
-    try {
-        $revenueByYear = $db->query("
-            SELECT 
-                EXTRACT(YEAR FROM created_at)::integer as year,
-                EXTRACT(MONTH FROM created_at)::integer as month,
                 SUM(amount) as total
             FROM donations
-            WHERE verification_status = 'approved'
-            AND created_at >= NOW() - INTERVAL '24 months'
-            GROUP BY EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)
-            ORDER BY year ASC, month ASC
+            WHERE created_at >= NOW() - INTERVAL '6 months'
+            AND verification_status = 'approved'
+            GROUP BY TO_CHAR(created_at, 'YYYY-MM')
+            ORDER BY month ASC
         ")->fetchAll();
-        $result['revenue_by_year'] = $revenueByYear;
+        $result['donations_per_month'] = $donationsPerMonth;
     } catch (Exception $e) {
-        $result['revenue_by_year'] = [];
-        error_log('Revenue query error: ' . $e->getMessage());
+        $result['donations_per_month'] = [];
+        error_log('Donations query error: ' . $e->getMessage());
     }
     
-    // Top NGOs by donations
+    // Top 5 NGOs only (faster)
     try {
         $topNGOs = $db->query("
             SELECT 
@@ -93,7 +56,7 @@ try {
             WHERE n.status = 'approved'
             GROUP BY n.id, n.ngo_name
             ORDER BY total_raised DESC
-            LIMIT 10
+            LIMIT 5
         ")->fetchAll();
         $result['top_ngos'] = $topNGOs;
     } catch (Exception $e) {
