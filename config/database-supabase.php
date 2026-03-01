@@ -14,12 +14,19 @@ class Database {
 
     private function __construct() {
         try {
-            $dsn = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";sslmode=require";
-            $this->conn = new PDO($dsn, DB_USER, DB_PASS, [
+            $dsn = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME;
+            $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false
-            ]);
+            ];
+            
+            // Add SSL mode if connecting to Supabase
+            if (strpos(DB_HOST, 'supabase.co') !== false) {
+                $dsn .= ";sslmode=require";
+            }
+            
+            $this->conn = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch(PDOException $e) {
             error_log("Connection failed: " . $e->getMessage());
             die(json_encode(['error' => 'Database connection failed']));
