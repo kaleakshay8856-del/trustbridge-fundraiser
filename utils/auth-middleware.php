@@ -1,13 +1,19 @@
 <?php
 require_once __DIR__ . '/../config/jwt.php';
 
-function authenticate($allowed_roles = []) {
+function getBearerToken() {
     $headers = getallheaders();
     $token = $headers['Authorization'] ?? '';
     
     if (strpos($token, 'Bearer ') === 0) {
         $token = substr($token, 7);
     }
+    
+    return $token ?: null;
+}
+
+function authenticate($allowed_roles = []) {
+    $token = getBearerToken();
     
     if (!$token) {
         http_response_code(401);
