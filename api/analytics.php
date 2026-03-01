@@ -10,17 +10,17 @@ $db = Database::getInstance();
 try {
     $result = [];
     
-    // Donations per month (last 12 months)
+    // Donations per month (last 12 months) - PostgreSQL syntax
     try {
         $donationsPerMonth = $db->query("
             SELECT 
-                DATE_FORMAT(created_at, '%Y-%m') as month,
+                TO_CHAR(created_at, 'YYYY-MM') as month,
                 COUNT(*) as count,
                 SUM(amount) as total
             FROM donations
-            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
+            WHERE created_at >= NOW() - INTERVAL '12 months'
             AND verification_status = 'approved'
-            GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+            GROUP BY TO_CHAR(created_at, 'YYYY-MM')
             ORDER BY month ASC
         ")->fetchAll();
         $result['donations_per_month'] = $donationsPerMonth;
@@ -44,16 +44,16 @@ try {
         error_log('Approval status query error: ' . $e->getMessage());
     }
     
-    // Fraud flags per month (last 12 months)
+    // Fraud flags per month (last 12 months) - PostgreSQL syntax
     try {
         $fraudPerMonth = $db->query("
             SELECT 
-                DATE_FORMAT(created_at, '%Y-%m') as month,
+                TO_CHAR(created_at, 'YYYY-MM') as month,
                 COUNT(*) as count,
                 severity
             FROM fraud_flags
-            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
-            GROUP BY DATE_FORMAT(created_at, '%Y-%m'), severity
+            WHERE created_at >= NOW() - INTERVAL '12 months'
+            GROUP BY TO_CHAR(created_at, 'YYYY-MM'), severity
             ORDER BY month ASC
         ")->fetchAll();
         $result['fraud_per_month'] = $fraudPerMonth;
@@ -62,17 +62,17 @@ try {
         error_log('Fraud flags query error: ' . $e->getMessage());
     }
     
-    // Revenue by year
+    // Revenue by year - PostgreSQL syntax
     try {
         $revenueByYear = $db->query("
             SELECT 
-                YEAR(created_at) as year,
-                MONTH(created_at) as month,
+                EXTRACT(YEAR FROM created_at)::integer as year,
+                EXTRACT(MONTH FROM created_at)::integer as month,
                 SUM(amount) as total
             FROM donations
             WHERE verification_status = 'approved'
-            AND created_at >= DATE_SUB(NOW(), INTERVAL 24 MONTH)
-            GROUP BY YEAR(created_at), MONTH(created_at)
+            AND created_at >= NOW() - INTERVAL '24 months'
+            GROUP BY EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)
             ORDER BY year ASC, month ASC
         ")->fetchAll();
         $result['revenue_by_year'] = $revenueByYear;

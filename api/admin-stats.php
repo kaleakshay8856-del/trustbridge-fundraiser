@@ -38,32 +38,32 @@ try {
             "SELECT COUNT(*) as count FROM ngos WHERE status IN ('pending', 'under_review')"
         )->fetch()['count'];
         
-        // Total donations
+        // Total donations amount
         $total_donations = $db->query(
             "SELECT COALESCE(SUM(amount), 0) as total FROM donations WHERE verification_status = 'approved'"
         )->fetch()['total'];
         
-        // Active fraud flags
+        // Active fraud flags (PostgreSQL uses FALSE not 0)
         $fraud_flags = $db->query(
-            "SELECT COUNT(*) as count FROM fraud_flags WHERE resolved = 0"
+            "SELECT COUNT(*) as count FROM fraud_flags WHERE resolved = FALSE"
         )->fetch()['count'];
         
-        // Recent activity
+        // Recent activity (PostgreSQL syntax)
         $recent_donations = $db->query(
-            "SELECT COUNT(*) as count FROM donations WHERE created_at > DATE_SUB(NOW(), INTERVAL 7 DAY)"
+            "SELECT COUNT(*) as count FROM donations WHERE created_at > NOW() - INTERVAL '7 days'"
         )->fetch()['count'];
         
         $recent_ngos = $db->query(
-            "SELECT COUNT(*) as count FROM ngos WHERE created_at > DATE_SUB(NOW(), INTERVAL 7 DAY)"
+            "SELECT COUNT(*) as count FROM ngos WHERE created_at > NOW() - INTERVAL '7 days'"
         )->fetch()['count'];
         
         echo json_encode([
-            'total_ngos' => $total_ngos,
-            'pending_approvals' => $pending_approvals,
+            'total_ngos' => intval($total_ngos),
+            'pending_approvals' => intval($pending_approvals),
             'total_donations' => floatval($total_donations),
-            'fraud_flags' => $fraud_flags,
-            'recent_donations' => $recent_donations,
-            'recent_ngos' => $recent_ngos
+            'fraud_flags' => intval($fraud_flags),
+            'recent_donations' => intval($recent_donations),
+            'recent_ngos' => intval($recent_ngos)
         ]);
     }
     
